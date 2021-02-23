@@ -22,7 +22,7 @@ function campoRequerido(elemento){
         let expresion = /\d$/;
         if(expresion.test(codigo.value) && codigo.value.length >=1){
             console.log("salio todo bien");
-            codigo.value = codigo.value.slice(0,1);
+            codigo.value = codigo.value.slice(0,10);
             codigo.className=`form-control is-valid`;
             return true;
         }

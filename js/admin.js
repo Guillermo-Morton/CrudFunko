@@ -2,6 +2,13 @@ import {Funko} from "./funkoClass.js";
 
 let listaFunkopop = [];
 
+const modalFunko = new bootstrap.Modal(document.getElementById('modal'));
+
+let btnAgregar = document.getElementById('btnAgregar');
+btnAgregar.addEventListener('click', ()=>{
+    modalFunko.show()
+})
+
 window.agregarFunkopop= function(event){
     event.preventDefault();
     console.log("dentro de la funcion agregar");
@@ -33,13 +40,15 @@ window.agregarFunkopop= function(event){
 
         // limpiar el formulario
         limpiarForumulario();
-
+        // leer datos
+        leerDatos();
+        
         Swal.fire(
             'Perfecto!',
             'Agregaste un producto correctamente',
             'success'
           )
-    
+        modalFunko.hide();
     }else{
         console.log("datos incorretos");
         Swal.fire({
@@ -48,8 +57,8 @@ window.agregarFunkopop= function(event){
             text: 'Algo salio mal!',
           })
     }
-    let modalFunko = new bootstrap.Modal(document.getElementById("modalProducto"))
-        modalFunko.hide();
+    
+        
 }
 
 function limpiarForumulario(){
@@ -74,4 +83,43 @@ function limpiarForumulario(){
    imgProducto.className= "form-control";
    
    
+}
+function leerDatos(){
+    // esta funcion se encarga de leer los datos almacenados en localstorage
+    if(localStorage.length > 0){
+        let _listaFunkopop = JSON.parse(localStorage.getItem('listaFunkoKey')) ;
+        // si el arreglo de funkopop esta vacio igualar con los que traje de localstorage
+        if(listaFunkopop.length === 0){
+            listaFunkopop= _listaFunkopop;
+    
+        }
+        // dibujar todos los objetos funko en la tabla
+        dibujarDatos(_listaFunkopop);
+    }
+    
+}
+
+function dibujarDatos(_listaFunkopop){
+    // traigo el elemento padre
+    let bodyTablaProductos = document.getElementById('tbodyProductos');
+    bodyTablaProductos.innerHTML = '';
+    let codigoHTML = '';
+    // for(let i=0; i > _listaFunkopop.length; i++)
+    for(let i in _listaFunkopop){
+        codigoHTML = `
+         <tr>
+            <th scope="row">${_listaFunkopop[i].codigo}</th>
+            <td>${_listaFunkopop[i].nombre}</td>
+            <td>${_listaFunkopop[i].numSerie}</td>
+            <td>${_listaFunkopop[i].categoria}</td>
+            <td>${_listaFunkopop[i].descripcion}</td>
+            <td>${_listaFunkopop[i].imagen}</td>
+            <td>
+                <button class="btn btn-warning text-light">Editar</button>
+                <button class="btn btn-danger text-light">Borrar</button>
+            </td>
+          </tr>
+        `;
+        bodyTablaProductos.innerHTML += codigoHTML;
+    }
 }

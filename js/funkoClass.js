@@ -4,7 +4,8 @@ export class Funko{
         this.nombre = nombre;
         this.numSerie = numSerie;
         this.categoria = categoria;
-        this.descripcion = imagen;
+        this.descripcion = descripcion;
+        this.imagen = imagen;
     }
 }
 
