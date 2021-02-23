@@ -20,6 +20,22 @@ function campoRequerido(elemento){
     function validarCodigo(codigo){
         console.log("dentro de la funcion validarCodigo");
         let expresion = /\d$/;
+        if(expresion.test(codigo.value) && codigo.value.length >=1){
+            console.log("salio todo bien");
+            codigo.value = codigo.value.slice(0,1);
+            codigo.className=`form-control is-valid`;
+            return true;
+        }
+        else{
+            console.log("todo mal flaco hubo un error");
+            codigo.value = codigo.value.slice(0,1);
+            codigo.className=`form-control is-invalid`;
+            return false;
+        }
+    }
+    function validarSerie(codigo){
+        console.log("dentro de la funcion validarCodigo");
+        let expresion = /\d$/;
         if(expresion.test(codigo.value) && codigo.value.length >=10){
             console.log("salio todo bien");
             codigo.value = codigo.value.slice(0,10);
@@ -38,10 +54,9 @@ function campoRequerido(elemento){
     function validarGeneral(event){
         event.preventDefault();
         console.log("dentro de la funcion validarGeneral");
-        let alerta= document.querySelector("#msjEnvio");
-        if(validarCodigo(document.getElementById(`codigoProducto`))
-        && validarCodigo(document.getElementById(`numSerie`))
-        && campoRequerido(document.getElementById(`numSerie`))
+        if(validarCodigo(document.getElementById(`codigoProducto`))       
+        && campoRequerido(document.getElementById(`nombreProducto`))
+        && validarSerie(document.getElementById(`numSerie`))
         && campoRequerido(document.getElementById(`categoriaProducto`))
         && campoRequerido(document.getElementById(`descProducto`))
         && campoRequerido(document.getElementById(`imgProducto`))){
