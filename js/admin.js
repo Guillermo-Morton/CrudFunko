@@ -8,6 +8,8 @@ let btnAgregar = document.getElementById('btnAgregar');
 btnAgregar.addEventListener('click', ()=>{
     modalFunko.show()
 })
+// al cargar la pagina cargo la funcion que carga los datos y los dibuja
+leerDatos();
 
 window.agregarFunkopop= function(event){
     event.preventDefault();
@@ -115,11 +117,64 @@ function dibujarDatos(_listaFunkopop){
             <td>${_listaFunkopop[i].descripcion}</td>
             <td>${_listaFunkopop[i].imagen}</td>
             <td>
-                <button class="btn btn-warning text-light">Editar</button>
-                <button class="btn btn-danger text-light">Borrar</button>
+                <button class="btn btn-warning text-light" onclick="editarFunko(this)" id='${_listaFunkopop[i].codigo}'>Editar</button>
+                <button class="btn btn-danger text-light" onclick="eliminarFunkopop(this)" id='${_listaFunkopop[i].codigo}'>Borrar</button>
             </td>
           </tr>
         `;
         bodyTablaProductos.innerHTML += codigoHTML;
     }
+}
+
+window.eliminarFunkopop= function (funkopop){
+    console.log('prueba', funkopop.id);
+    Swal.fire({
+        title: '¿Estas seguro de eliminar el Funkopop seleccionado?',
+        text: "No hay posibilidades de revertir esta accion!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si, eliminar!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            // aqui borrar el producto
+            let funkopopFiltrados = listaFunkopop.filter((producto)=>{
+              return producto.codigo != funkopop.id;
+            })
+            // pasamos los funko filtrados al arreglo principal
+            listaFunkopop = funkopopFiltrados;
+            // guardar los nuevos datos en local storage
+            localStorage.setItem('listaFunkoKey', JSON.stringify(listaFunkopop))
+            leerDatos();
+            console.log(funkopopFiltrados);
+          Swal.fire(
+            'Eliminado!',
+            'El Funko se elimino correctamente.',
+            'success'
+          )
+        }
+      })
+      
+}
+
+window.editarFunko= function(btnEditar){
+  console.log(btnEditar.id);
+  // limpiar los datos de la ventana modal
+  limpiarForumulario();
+  // busca el objeto a modificar
+  let objetoEncontrado = listaFunkopop.find((producto)=>{
+    return producto.codigo==btnEditar.id;
+  });
+  console.log(objetoEncontrado)
+ //cargar los datos en el formulario
+ document.getElementById('codigoProducto').value=objetoEncontrado.codigo; 
+ document.getElementById('nombreProducto').value=objetoEncontrado.nombre; 
+ document.getElementById('numSerie').value=objetoEncontrado.numSerie; 
+ document.getElementById('categoriaProducto').value=objetoEncontrado.categoria; 
+ document.getElementById('descProducto').value=objetoEncontrado.descripcion; 
+ document.getElementById('imgProducto').value=objetoEncontrado.imagen; 
+ 
+  modalFunko.show();
 }
