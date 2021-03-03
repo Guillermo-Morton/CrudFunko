@@ -58,8 +58,7 @@ function campoRequerido(elemento){
         && campoRequerido(document.getElementById(`nombreProducto`))
         && validarSerie(document.getElementById(`numSerie`))
         && campoRequerido(document.getElementById(`categoriaProducto`))
-        && campoRequerido(document.getElementById(`descProducto`))
-        && campoRequerido(document.getElementById(`imgProducto`))){
+        && campoRequerido(document.getElementById(`descProducto`))){
             console.log(`todo correcto`);
         }
     }

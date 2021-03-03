@@ -80,7 +80,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            <form id="formulario" onsubmit="agregarFunkopop(event)">
+            <form id="formulario" onsubmit="guardarFunko(event)">
                 <div class="mb-3">
                     <label for="">Codigo</label>
                     <input type="number" placeholder="Ingrese el codigo del producto" id="codigoProducto"  class="form-control"
@@ -109,8 +109,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="">Imagen</label>
-                    <input type="text" placeholder="Ingrese una imagen" id="imgProducto" class="form-control" 
-                    onblur="campoRequerido(this)">
+                    <input type="text" placeholder="Ingrese una imagen" id="imgProducto" class="form-control">
                 </div>
                     <button type="submit" class="btn btn-primary my-1">Guardar</button>
 

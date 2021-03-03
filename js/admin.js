@@ -6,21 +6,23 @@ const modalFunko = new bootstrap.Modal(document.getElementById('modal'));
 
 let btnAgregar = document.getElementById('btnAgregar');
 btnAgregar.addEventListener('click', ()=>{
-    modalFunko.show()
+    limpiarForumulario();
+    modalFunko.show();
 })
+let existeFunko = false;
+
 // al cargar la pagina cargo la funcion que carga los datos y los dibuja
 leerDatos();
 
 window.agregarFunkopop= function(event){
-    event.preventDefault();
+    // event.preventDefault();
     console.log("dentro de la funcion agregar");
     let alerta= document.querySelector("#msjEnvio");
     if(validarCodigo(document.getElementById(`codigoProducto`))       
     && campoRequerido(document.getElementById(`nombreProducto`))
     && validarCodigo(document.getElementById(`numSerie`))
     && campoRequerido(document.getElementById(`categoriaProducto`))
-    && campoRequerido(document.getElementById(`descProducto`))
-    && campoRequerido(document.getElementById(`imgProducto`))){
+    && campoRequerido(document.getElementById(`descProducto`))){
         console.log(`todo correcto`);
         // se crea un funkopop
         
@@ -83,6 +85,7 @@ function limpiarForumulario(){
    
    let imgProducto= document.getElementById(`imgProducto`);
    imgProducto.className= "form-control";
+   existeFunko=false;
    
    
 }
@@ -175,6 +178,58 @@ window.editarFunko= function(btnEditar){
  document.getElementById('categoriaProducto').value=objetoEncontrado.categoria; 
  document.getElementById('descProducto').value=objetoEncontrado.descripcion; 
  document.getElementById('imgProducto').value=objetoEncontrado.imagen; 
- 
+ //cambiar el valor de la variable existeFunko
+  existeFunko= true; 
   modalFunko.show();
 }
+window.guardarFunko= function(event){
+  event.preventDefault();
+  if(existeFunko===true){
+
+    actualizarDatosFunkopop();
+  }else{
+    agregarFunkopop();
+  }
+}
+function actualizarDatosFunkopop(){
+  // esta funcion guarda en ls con los datos modificados
+  console.log('modificar');
+  // validar los campos
+  if(validarCodigo(document.getElementById(`codigoProducto`))       
+  && campoRequerido(document.getElementById(`nombreProducto`))
+  && validarSerie(document.getElementById(`numSerie`))
+  && campoRequerido(document.getElementById(`categoriaProducto`))
+  && campoRequerido(document.getElementById(`descProducto`))){
+  let codigo=document.getElementById('codigoProducto').value; 
+  let nombre=document.getElementById('nombreProducto').value; 
+  let numSerie=document.getElementById('numSerie').value; 
+  let categoria=document.getElementById('categoriaProducto').value; 
+  let descripcion=document.getElementById('descProducto').value; 
+  let imagen=document.getElementById('imgProducto').value; 
+  //buscar el objeto que quiero modificar y cambiar sus valores
+  for(let i in listaFunkopop){
+    if(listaFunkopop[i].codigo===codigo){
+      // encontre el funko a editar
+      listaFunkopop[i].nombre=nombre;
+      listaFunkopop[i].numSerie=numSerie;
+      listaFunkopop[i].categoria=categoria;
+      listaFunkopop[i].descripcion=descripcion;
+      listaFunkopop[i].imagen=imagen;
+    }
+  }
+  // guardar el array en localstorage
+  localStorage.setItem('listaFunkoKey', JSON.stringify(listaFunkopop))
+  // limpiar los datos
+  limpiarForumulario();
+  // cerrar ventana
+  modalFunko.hide();
+  // mostrar mensaje de operacion con exito
+  Swal.fire(
+    'Perfecto!',
+    'Editaste un producto correctamente',
+    'success'
+  )
+  leerDatos();
+  }
+}   
+
